@@ -18,9 +18,6 @@ export default function UsernameForm() {
     debounce(async (username) => {
       if (username.length >= 3) {
         getDoc(doc(db, `books`, username)).then(doc => {
-          console.log(123, doc.data())
-          console.log(123, doc.exists())
-          console.log(4, doc.data().year === username, doc.data().year, parseInt(username))
           setIsValid(doc.data().year === parseInt(username))
           setIsLoading(false)
         })

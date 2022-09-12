@@ -3,10 +3,10 @@ import { useContext } from 'react';
 import { UserContext } from '../lib/context';
 import UsernameForm from "../components/UsernameForm";
 import ImageUploader from "../components/ImageUploader";
+import Image from 'next/image'
 
 export default function Login(props) {
   const { user, username } = useContext(UserContext)
-  console.log('test', user, username)
 
   return (
     <>
@@ -32,13 +32,13 @@ function SignInButton() {
 
   return (
     <button className="btn-google" onClick={signInWithGoogle}>
-      <img src={'/google.png'} width="30px" /> Sign in with Google
+      <Image src={'/google.png'} width="30px" height="30px" alt="Sign in with Google logo" /> Sign in with Google
     </button>
   )
 }
 
 function SignOutButton() {
-  return <button type="button" className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => signOutGoogle()}>Sign out</button>
+  return <button type="button" className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={() => signOutGoogle()}>Sign out</button>
 }
 
 // function UsernameForm() {
