@@ -52,6 +52,11 @@ const db = getFirestore(app)
 // Collection ref
 const colRef = collection(db, 'books')
 
+const getCollection = async (source: string) => {
+  const querySnapshot = await getDocs(collection(db, source))
+  return querySnapshot.docs.map((doc) => doc.data())
+}
+
 // Queries
 const q = query(colRef, orderBy('createdAt'))
 
@@ -94,7 +99,6 @@ const deleteDocument = (id) => {
 onSnapshot(colRef, (snapshot) => {
   let books = []
   snapshot.docs.forEach((doc) => {
-    console.log(doc.data(), 123)
     books.push({ ...doc.data(), id: doc.id })
   })
   console.log('Books', books)
@@ -160,6 +164,7 @@ export {
   db,
   provider,
   collection,
+  getCollection,
   doc,
   onSnapshot,
   signInPopup,

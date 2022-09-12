@@ -20,7 +20,8 @@
     "react-dom": "18.2.0",
     "react-firebase-hooks": "^5.0.3",
     "react-hook-form": "^7.34.0",
-    "react-hot-toast": "^2.3.0"
+    "react-hot-toast": "^2.3.0",
+    "react-player": "^2.10.1"
   },
   "devDependencies": {
     "@types/node": "^18.7.2",
