@@ -18,7 +18,7 @@ export default function ProtectedRoute() {
   if (loading) return <p>Loading...</p>
   return (
     <div className='wrapper'>
-      <h1>This is a protected route.</h1>
+      <h1>This is a protected route. Keep away</h1>
     </div>
   )
 }
