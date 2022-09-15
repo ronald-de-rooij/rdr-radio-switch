@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Lexend&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
 button:hover {
   filter: brightness(90%);
 }
@@ -34,4 +37,10 @@ button.btn-google {
 .btn-google img {
   width: 30px;
   margin-right: 10px;
+}
+
+body {
+  font-family: 'Lato', sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-text);
 }
