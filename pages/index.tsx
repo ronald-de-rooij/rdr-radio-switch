@@ -30,7 +30,7 @@ export default function Home() {
   return (
     <div className="p-8">
       <h1 className="font-press text-3xl font-black uppercase">Playing</h1>
-      <h2 className="font-press text-xl font-light uppercase">{playingStream.name}</h2>
+      {playingStream ? <h2 className="font-press text-xl font-light uppercase"> {playingStream.name}</h2> : null}
       <audio controls ref={audioRef} className="my-4">
         <source src={playingStream.url} type="audio/mp3" />
         Your browser does not support the audio element.
