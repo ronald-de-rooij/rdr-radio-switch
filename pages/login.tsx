@@ -2,7 +2,6 @@ import { signInPopup, signOutGoogle } from "../lib/firebase";
 import { useContext } from 'react';
 import { UserContext } from '../lib/context';
 import UsernameForm from "../components/UsernameForm";
-import ImageUploader from "../components/ImageUploader";
 import Image from 'next/image'
 
 export default function Login(props) {
@@ -16,7 +15,6 @@ export default function Login(props) {
           :
           <SignInButton />
         }
-        <ImageUploader />
         <UsernameForm />
       </main>
     </>

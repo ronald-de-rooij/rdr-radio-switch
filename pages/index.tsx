@@ -11,10 +11,8 @@ export default function Home() {
   const audioRef = useRef<HTMLAudioElement>()
 
   useEffect(() => {
-    console.log('1 ')
     getCollection("streams").then((snapshot) => {
       setStreams(snapshot)
-      console.log('SNAPSHOT', snapshot)
       setAudio(new Audio(snapshot[0].url)) // only call client
     })
   }, [])
