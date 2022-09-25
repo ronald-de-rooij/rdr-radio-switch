@@ -25,6 +25,7 @@ import {
   getStorage,
   getDownloadURL,
   uploadBytesResumable,
+  uploadString,
 } from 'firebase/storage'
 
 const firebaseConfig = {
@@ -50,7 +51,7 @@ const app = initializeApp(firebaseConfig)
 const db = getFirestore(app)
 
 // Collection ref
-const colRef = collection(db, 'books')
+// const colRef = collection(db, 'books')
 
 const getCollection = async (source: string) => {
   const querySnapshot = await getDocs(collection(db, source))
@@ -58,25 +59,25 @@ const getCollection = async (source: string) => {
 }
 
 // Queries
-const q = query(colRef, orderBy('createdAt'))
+// const q = query(colRef, orderBy('createdAt'))
 
 // Add doc
-const addDocToCollection = () => {
-  addDoc(colRef, {
-    title: 'The Lord of the Rings',
-    author: 'J.R.R. Tolkien',
-    year: 1954,
-    createdAd: serverTimestamp(),
-  }).then((docRef) => {
-    console.log('Document written with ID: ', docRef.id)
-  })
-}
+// const addDocToCollection = () => {
+//   addDoc(colRef, {
+//     title: 'The Lord of the Rings',
+//     author: 'J.R.R. Tolkien',
+//     year: 1954,
+//     createdAd: serverTimestamp(),
+//   }).then((docRef) => {
+//     console.log('Document written with ID: ', docRef.id)
+//   })
+// }
 
-const deleteDocument = (id) => {
-  deleteDoc(doc(db, 'books', id)).then(() => {
-    console.log('Document successfully deleted!')
-  })
-}
+// const deleteDocument = (id) => {
+//   deleteDoc(doc(db, 'books', id)).then(() => {
+//     console.log('Document successfully deleted!')
+//   })
+// }
 
 // addDocToCollection()
 // deleteDocument('q9qeuD4XJFYHKhhJwIOy')
@@ -96,23 +97,23 @@ const deleteDocument = (id) => {
 //   })
 
 // Get realtime collection data
-onSnapshot(colRef, (snapshot) => {
-  let books = []
-  snapshot.docs.forEach((doc) => {
-    books.push({ ...doc.data(), id: doc.id })
-  })
-  console.log('Books', books)
-})
+// onSnapshot(colRef, (snapshot) => {
+//   let books = []
+//   snapshot.docs.forEach((doc) => {
+//     books.push({ ...doc.data(), id: doc.id })
+//   })
+//   console.log('Books', books)
+// })
 
-const docRef = doc(db, 'books', '0otv080KpGEDXaQBpffq')
+// const docRef = doc(db, 'books', '0otv080KpGEDXaQBpffq')
 // getDoc(docRef).then((doc) => {
 //   console.log(doc.data(), doc.id)
 // })
 
 // onSnapshot realtime listener
-onSnapshot(docRef, (snapshot) => {
-  console.log(snapshot.data(), snapshot.id)
-})
+// onSnapshot(docRef, (snapshot) => {
+//   console.log(snapshot.data(), snapshot.id)
+// })
 
 const auth = getAuth(app)
 const provider = new GoogleAuthProvider()
@@ -169,11 +170,12 @@ export {
   onSnapshot,
   signInPopup,
   signOutGoogle,
-  q,
   getDoc,
   serverTime,
   storage,
   ref,
   getDownloadURL,
+  uploadString,
   uploadBytesResumable,
 }
+// q,

@@ -3,7 +3,6 @@ import { auth, ref, getDownloadURL, uploadBytesResumable, storage } from '../lib
 
 import Loader from './Loader';
 
-
 // Uploads images to Firebase Storage
 export default function ImageUploader() {
   const [uploading, setUploading] = useState(false);
@@ -14,7 +13,7 @@ export default function ImageUploader() {
     const file = e.target.files[0];
     const extension = file.type.split('/')[1];
 
-    const storageRef = ref(storage, `uploads/${auth.currentUser.uid}/${Date.now()}.${extension}`);
+    const storageRef = ref(storage, `streams/${}`);
     setUploading(true);
 
     const uploadTask = uploadBytesResumable(storageRef, file);

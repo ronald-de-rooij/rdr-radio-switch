@@ -19,25 +19,8 @@ export default function Home() {
     })
   }, [])
 
-
-  // play audio sound
-  const playSound = () => {
-    audio.play();
-  }
-
-  // pause audio sound
-  const pauseSound = () => {
-    audio.pause();
-  }
-
-  // stop audio sound
-  const stopSound = () => {
-    audio.pause();
-    audio.currentTime = 0;
-  }
-
-  const setAudioStream = (url: string) => {
-    setPlayingStream(url)
+  const setAudioStream = (stream) => {
+    setPlayingStream(stream)
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current.load();
@@ -47,38 +30,22 @@ export default function Home() {
 
   // getStreams()
   return (
-    <div>
-      <h1>Play Radio</h1>
-      <hr />
-      <audio controls ref={audioRef}>
-        <source src={playingStream} type="audio/mp3" />
+    <div className="p-8">
+      <h1 className="font-press text-3xl font-black uppercase">Playing</h1>
+      <h2 className="font-press text-xl font-light uppercase">{playingStream.name}</h2>
+      <audio controls ref={audioRef} className="my-4">
+        <source src={playingStream.url} type="audio/mp3" />
         Your browser does not support the audio element.
       </audio>
+      <ul role="list" className="divide-y divide-gray-200">
+        {streams.map((stream) => (
+          <li key={stream.name} className="flex py-4" onClick={() => setAudioStream(stream)}>
+            {stream.image ? <img src={stream.image} alt={stream.name} /> : null}
+          </li>
+        ))}
+      </ul>
 
-      {playingStream}
-      {streams.map((stream) => {
-        return <ul key={stream.name} role="list" className="divide-y divide-gray-200" onClick={() => setAudioStream(stream.url)}>
-          {streams.map((stream) => (
-            <li key={stream.name} className="flex py-4">
-              <img className="w-10 h-10 rounded-full" alt="" />
-              <div className="ml-3">
-                <p className="text-sm font-medium text-gray-900">{stream.name}</p>
-                <p className="text-sm text-gray-500">{stream.title}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-      })}
-
-      <button onClick={() => toast.success("Success!")}>Successs</button>
-
-      <div className="App">
-        <h3 className="mb-4">Play an mp3 file - <a href="https://www.cluemediator.com">Clue Mediator</a></h3>
-
-        <input type="button" className="mr-2 btn btn-primary" value="Play" onClick={playSound}></input>
-        <input type="button" className="mr-2 btn btn-warning" value="Pause" onClick={pauseSound}></input>
-        <input type="button" className="mr-2 btn btn-danger" value="Stop" onClick={stopSound}></input>
-      </div>
+      {/* <button onClick={() => toast.success("Success!")}>Call a toast</button> */}
     </div >
   )
 }
