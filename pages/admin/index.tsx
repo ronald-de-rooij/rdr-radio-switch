@@ -19,7 +19,7 @@ export default function ProtectedRoute() {
   useEffect(() => {
     // if user is not authenticated, redirect to login page
     if (!user) return
-    if (user.email !== 'ronaldderooij17@gmail.com') Router.push('/login')
+    if (user.email !== process.env.GOOGLE_EMAIL) Router.push('/login')
   })
 
   const [state, setState] = useState({
@@ -86,8 +86,8 @@ export default function ProtectedRoute() {
   };
 
   return (
-    <div className="flex items-center justify-center bg-white p-8">
-      <div className="mx-auto w-full max-w-md">
+    <div className="flex items-center justify-center p-8 bg-white">
+      <div className="w-full max-w-md mx-auto">
         <form onSubmit={handleSubmit}>
           <label htmlFor="name" className="block font-medium text-gray-700">
             Name
@@ -100,7 +100,7 @@ export default function ProtectedRoute() {
               required={true}
               value={state.name}
               onChange={handleChange}
-              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             />
           </div>
           <label htmlFor="url" className="block font-medium text-gray-700">
@@ -114,7 +114,7 @@ export default function ProtectedRoute() {
               required={true}
               value={state.url}
               onChange={handleChange}
-              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             />
           </div>
 
@@ -128,7 +128,7 @@ export default function ProtectedRoute() {
             </div> : null}
 
 
-          <button className='w-full bg-blue-600 hover:bg-blue-700 duration-300 text-white shadow p-2 mt-3' type='submit'>
+          <button className='w-full p-2 mt-3 text-white duration-300 bg-blue-600 shadow hover:bg-blue-700' type='submit'>
             Add stream
           </button>
         </form>
