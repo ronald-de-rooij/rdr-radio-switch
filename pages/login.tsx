@@ -30,7 +30,7 @@ function SignInButton() {
 
   return (
     <button className="btn-google" onClick={signInWithGoogle}>
-      <Image src={'/google.png'} width="30px" height="30px" alt="Sign in with Google logo" /> Sign in with Google
+      <Image src={'/google.png'} width="30" height="30" alt="Sign in with Google logo" /> Sign in with Google
     </button>
   )
 }
