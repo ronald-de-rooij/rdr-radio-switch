@@ -22,8 +22,12 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
-, "lib/firebase.ts"  ],
+    "**/*.tsx",
+    "lib/firebase.ts",
+    "pages/.._document.tsx",
+    "pages/.._document.tsx",
+    "lib/hooks.ts"
+  ],
   "exclude": [
     "node_modules"
   ]

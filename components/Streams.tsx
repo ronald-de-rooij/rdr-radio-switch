@@ -1,9 +1,14 @@
 import Image from 'next/image'
 
+interface Stream {
+  name: string
+  image: string
+}
+
 export default function Streams({ streams, streamSelected }) {
   return (
     <div className="grid grid-cols-12">
-      {streams.map((stream) =>
+      {streams.map((stream: Stream) =>
         stream.image ? (
           <Image
             src={stream.image}

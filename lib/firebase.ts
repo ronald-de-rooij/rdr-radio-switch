@@ -13,6 +13,7 @@ import {
   serverTimestamp,
   getDoc,
   FieldValue,
+  DocumentSnapshot,
 } from 'firebase/firestore'
 import {
   getAuth,
@@ -52,11 +53,6 @@ const db = getFirestore(app)
 
 // Collection ref
 // const colRef = collection(db, 'books')
-
-const getCollection = async (source: string) => {
-  const querySnapshot = await getDocs(collection(db, source))
-  return querySnapshot.docs.map((doc) => doc.data())
-}
 
 // Queries
 // const q = query(colRef, orderBy('createdAt'))
@@ -118,36 +114,35 @@ const getCollection = async (source: string) => {
 const auth = getAuth(app)
 const provider = new GoogleAuthProvider()
 
-const signInPopup = () => {
-  console.log('test')
-  signInWithPopup(auth, provider)
-    .then((result) => {
-      console.log(123, result)
-      // This gives you a Google Access Token. You can use it to access the Google API.
-      const credential = GoogleAuthProvider.credentialFromResult(result)
-      const token = credential.accessToken
-      // The signed-in user info.
-      const user = result.user
-    })
-    .catch((error) => {
-      // Handle Errors here.
-      const errorCode = error.code
-      const errorMessage = error.message
-      // The email of the user's account used.
-      const email = error.customData.email
-      // The AuthCredential type that was used.
-      const credential = GoogleAuthProvider.credentialFromError(error)
-    })
+const signInPopup = () => signInWithPopup(auth, provider)
+const signOutGoogle = () => signOut(auth)
+
+const getCollection = async (source: string) => {
+  const querySnapshot = await getDocs(collection(db, source))
+  return querySnapshot.docs.map((doc) => doc.data())
 }
 
-const signOutGoogle = () => {
-  signOut(auth).then(() => {
-    // Sign-out successful.
-    console.log('Signed out')
+const getDocument = async (collectionName: string, id: string) => {
+  const docRef = doc(db, collectionName, id)
+  const docSnap = await getDoc(docRef)
+  if (docSnap.exists()) {
+    return {
+      id: docSnap.id,
+      ...docSnap.data(),
+    } as any
+  }
+}
+
+const addDocument = async (collectionName: string, data: any) => {
+  const docRef = await addDoc(collection(db, collectionName), {
+    ...data,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
   })
+  return docRef.id
 }
 
-const postToJSON = (doc) => {
+const postToJSON = (doc: { data: () => any }) => {
   const data = doc.data()
   return {
     ...data,
@@ -157,12 +152,13 @@ const postToJSON = (doc) => {
 }
 
 const serverTime = serverTimestamp()
-
 const storage = getStorage(app)
 
 export {
   auth,
   db,
+  getDocument,
+  addDocument,
   provider,
   collection,
   getCollection,

@@ -1,34 +1,37 @@
-import { useContext, Fragment } from 'react';
-import { UserContext } from '../lib/context';
-import { signInPopup, signOutGoogle } from '../lib/firebase';
+import { useContext, Fragment } from 'react'
+import { signInPopup, signOutGoogle } from '../lib/firebase'
 import { Menu, Transition } from '@headlessui/react'
-import {
-  ArrowLeftOnRectangleIcon, CogIcon
-} from '@heroicons/react/24/outline'
-import RdrButton from './RdrButton';
+import { ArrowLeftOnRectangleIcon, CogIcon } from '@heroicons/react/24/outline'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import { auth } from '../lib/firebase'
+import RdrButton from './RdrButton'
+import Link from 'next/link'
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+function menuItemClass(...classes: string[]) {
+  return `${classes
+    .filter(Boolean)
+    .join(' ')} group flex items-center px-4 py-2 text-sm`
 }
 
 export default function HeaderAccount() {
-  const { user } = useContext(UserContext)
-  console.log(user)
-
+  const [user] = useAuthState(auth)
 
   return (
     <>
-      {!user ? <RdrButton url='#' link='Login' onClick={() => signInPopup()} /> :
-
-        <Menu as="div" className="relative inline-block text-left">
-          <div>
-            <Menu.Button>
-              <picture>
-                <img className="w-8 h-8 rounded-full" src={user?.photoURL || "/hacker.png"} alt="logo-radio-switch" />
-              </picture>
-            </Menu.Button>
-          </div>
-
+      {!user ? (
+        <RdrButton url="#" link="Login" onClick={() => signInPopup()} />
+      ) : (
+        <Menu as="div" className="relative inline-block text-left h-10">
+          <Menu.Button>
+            <picture>
+              <img
+                className="w-10 h-10 rounded-full"
+                src={user?.photoURL || '/hacker.png'}
+                alt="logo-radio-switch"
+                referrerPolicy="no-referrer"
+              />
+            </picture>
+          </Menu.Button>
 
           <Transition
             as={Fragment}
@@ -43,33 +46,29 @@ export default function HeaderAccount() {
               <div className="py-1">
                 <Menu.Item>
                   {({ active }) => (
-                    <a
-                      href="#"
-                      className={classNames(
-                        active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                        'group flex items-center px-4 py-2 text-sm'
+                    <Link
+                      href="/admin"
+                      className={menuItemClass(
+                        active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
                       )}
-                      onClick={() => signOutGoogle()}
                     >
                       <CogIcon
                         className="w-5 h-5 mr-3 text-gray-400 group-hover:text-gray-500"
                         aria-hidden="true"
                       />
                       Settings
-                    </a>
+                    </Link>
                   )}
                 </Menu.Item>
                 <Menu.Item>
                   {({ active }) => (
                     <a
                       href="#"
-                      className={classNames(
-                        active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                        'group flex items-center px-4 py-2 text-sm'
+                      className={menuItemClass(
+                        active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
                       )}
                       onClick={signOutGoogle}
                     >
-
                       <ArrowLeftOnRectangleIcon
                         className="w-5 h-5 mr-3 text-gray-400 group-hover:text-gray-500"
                         aria-hidden="true"
@@ -82,7 +81,7 @@ export default function HeaderAccount() {
             </Menu.Items>
           </Transition>
         </Menu>
-      }
+      )}
     </>
   )
 }
