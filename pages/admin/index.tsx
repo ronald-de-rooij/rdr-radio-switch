@@ -1,8 +1,4 @@
-import Router from 'next/router'
-import { FormEvent, useEffect, useState } from 'react'
-import { useContext } from 'react'
-import { UserContext } from '../../lib/context'
-
+import { FormEvent, useEffect, useState, useRef } from 'react'
 import { collection, addDoc, doc, setDoc } from 'firebase/firestore'
 import {
   db,
@@ -12,33 +8,48 @@ import {
   uploadString,
 } from '../../lib/firebase'
 
-export default function ProtectedRoute() {
-  const { user } = useContext(UserContext)
-  useEffect(() => {
-    // if user is not authenticated, redirect to login page
-    if (!user) return
-    if (user.email !== process.env.GOOGLE_EMAIL) Router.push('/login')
-  })
+import { useAuthState } from 'react-firebase-hooks/auth'
+import { auth } from '../../lib/firebase'
 
-  const [state, setState] = useState({
+export default function ProtectedRoute() {
+  const [user] = useAuthState(auth)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    setLoading(true)
+    if (user?.uid !== process.env.ADMIN_ID) window.location.href = '/'
+    else setLoading(false)
+  }, [user])
+
+  const [state, setStream] = useState({
     name: '',
     url: '',
     image: null,
   })
 
+  const audioRef = useRef<HTMLAudioElement>()
+
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setState({
+      setStream({
         ...state,
         [e.target.name]: await handleFileUpload(e.target.files[0]),
       })
       return
     }
-    setState({
+    setStream({
       ...state,
       [e.target.name]: e.target.value,
     })
   }
+
+  useEffect(() => {
+    if (state.url && audioRef.current) {
+      audioRef.current.pause()
+      audioRef.current.load()
+      audioRef.current.play()
+    }
+  }, [state.url])
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -62,7 +73,7 @@ export default function ProtectedRoute() {
         }
       })
       .finally(() => {
-        setState({
+        setStream({
           name: '',
           url: '',
           image: null,
@@ -84,11 +95,11 @@ export default function ProtectedRoute() {
     return result
   }
 
-  return (
+  return loading ? null : (
     <div className="flex items-center justify-center p-8 bg-white">
       <div className="w-full max-w-md mx-auto">
         <form onSubmit={handleSubmit}>
-          <label htmlFor="name" className="block font-medium text-gray-700">
+          <label htmlFor="name" className="block font-bold text-gray-700">
             Name
           </label>
           <div className="mt-1 mb-3">
@@ -102,7 +113,7 @@ export default function ProtectedRoute() {
               className="block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             />
           </div>
-          <label htmlFor="url" className="block font-medium text-gray-700">
+          <label htmlFor="url" className="block font-bold text-gray-700">
             URL
           </label>
           <div className="mt-1 mb-3">
@@ -116,8 +127,19 @@ export default function ProtectedRoute() {
               className="block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             />
           </div>
+          {state.url ? (
+            <>
+              <audio controls ref={audioRef} className="mx-auto my-4">
+                <source src={state.url} type="audio/mp3" />
+                Your browser does not support the audio element.
+              </audio>
+              <p className="text-sm text-center italic">
+                Is the stream working?
+              </p>
+            </>
+          ) : null}
 
-          <label htmlFor="url" className="block font-medium text-gray-700">
+          <label htmlFor="url" className="block font-bold text-gray-700">
             Select Image
           </label>
           <input

@@ -1,12 +1,18 @@
 import Image from 'next/image'
+import useStreams from '../hooks/useStreams'
+import Loading from './Loading'
 
 interface Stream {
   name: string
   image: string
 }
 
-export default function Streams({ streams, streamSelected }) {
-  return (
+export default function Streams({ streamSelected }) {
+  const { streams, loading } = useStreams()
+
+  return loading ? (
+    <Loading />
+  ) : (
     <div className="grid grid-cols-12">
       {streams.map((stream: Stream) =>
         stream.image ? (

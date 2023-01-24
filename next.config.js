@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: false,
   swcMinify: true,
   env: {
-    GOOGLE_EMAIL: process.env.GOOGLE_EMAIL,
+    ADMIN_ID: process.env.ADMIN_ID,
   },
   images: {
     remotePatterns: [

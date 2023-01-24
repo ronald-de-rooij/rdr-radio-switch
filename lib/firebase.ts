@@ -20,6 +20,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   signOut,
+  User,
 } from 'firebase/auth'
 import {
   ref,

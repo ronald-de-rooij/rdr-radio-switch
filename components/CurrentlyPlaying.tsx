@@ -1,11 +1,11 @@
-import React, { useState, useRef } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 interface Props {
   stream: string
 }
 
 export default function CurrentlyPlaying({ stream }: Props) {
-  React.useEffect(() => {
+  useEffect(() => {
     setAudioStream(stream)
   }, [stream])
 

@@ -1,8 +1,8 @@
-import { useContext, Fragment } from 'react'
-import { signInPopup, signOutGoogle } from '../lib/firebase'
+import { Fragment } from 'react'
+import { signOutGoogle } from '../lib/firebase'
 import { Menu, Transition } from '@headlessui/react'
 import { ArrowLeftOnRectangleIcon, CogIcon } from '@heroicons/react/24/outline'
-import { useAuthState } from 'react-firebase-hooks/auth'
+import { useSignInWithGoogle, useAuthState } from 'react-firebase-hooks/auth'
 import { auth } from '../lib/firebase'
 import RdrButton from './RdrButton'
 import Link from 'next/link'
@@ -14,12 +14,13 @@ function menuItemClass(...classes: string[]) {
 }
 
 export default function HeaderAccount() {
+  const [signInWithGoogle] = useSignInWithGoogle(auth)
   const [user] = useAuthState(auth)
 
   return (
     <>
       {!user ? (
-        <RdrButton url="#" link="Login" onClick={() => signInPopup()} />
+        <RdrButton url="#" link="Login" onClick={() => signInWithGoogle()} />
       ) : (
         <Menu as="div" className="relative inline-block text-left h-10">
           <Menu.Button>
@@ -32,7 +33,6 @@ export default function HeaderAccount() {
               />
             </picture>
           </Menu.Button>
-
           <Transition
             as={Fragment}
             enter="transition ease-out duration-100"
