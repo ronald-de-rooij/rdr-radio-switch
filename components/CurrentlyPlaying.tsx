@@ -6,6 +6,7 @@ interface Props {
 
 export default function CurrentlyPlaying({ stream }: Props) {
   useEffect(() => {
+    if (!stream) return
     setAudioStream(stream)
   }, [stream])
 

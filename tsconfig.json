@@ -26,7 +26,9 @@
     "lib/firebase.ts",
     "pages/.._document.tsx",
     "pages/.._document.tsx",
-    "lib/hooks.ts"
+    "lib/hooks.ts",
+    "components/AdminAuth.js",
+    "components/AdminAuth.js"
   ],
   "exclude": [
     "node_modules"

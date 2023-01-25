@@ -8,19 +8,9 @@ import {
   uploadString,
 } from '../../lib/firebase'
 
-import { useAuthState } from 'react-firebase-hooks/auth'
-import { auth } from '../../lib/firebase'
+import AdminAuth from '../../components/AdminAuth'
 
 export default function ProtectedRoute() {
-  const [user] = useAuthState(auth)
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    setLoading(true)
-    if (user?.uid !== process.env.ADMIN_ID) window.location.href = '/'
-    else setLoading(false)
-  }, [user])
-
   const [state, setStream] = useState({
     name: '',
     url: '',
@@ -95,74 +85,80 @@ export default function ProtectedRoute() {
     return result
   }
 
-  return loading ? null : (
-    <div className="flex items-center justify-center p-8 bg-white">
-      <div className="w-full max-w-md mx-auto">
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="name" className="block font-bold text-gray-700">
-            Name
-          </label>
-          <div className="mt-1 mb-3">
-            <input
-              type="text"
-              name="name"
-              id="name"
-              required={true}
-              value={state.name}
-              onChange={handleChange}
-              className="block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            />
-          </div>
-          <label htmlFor="url" className="block font-bold text-gray-700">
-            URL
-          </label>
-          <div className="mt-1 mb-3">
-            <input
-              type="url"
-              name="url"
-              id="url"
-              required={true}
-              value={state.url}
-              onChange={handleChange}
-              className="block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            />
-          </div>
-          {state.url ? (
-            <>
-              <audio controls ref={audioRef} className="mx-auto my-4">
-                <source src={state.url} type="audio/mp3" />
-                Your browser does not support the audio element.
-              </audio>
-              <p className="text-sm text-center italic">
-                Is the stream working?
-              </p>
-            </>
-          ) : null}
-
-          <label htmlFor="url" className="block font-bold text-gray-700">
-            Select Image
-          </label>
-          <input
-            type="file"
-            onChange={handleChange}
-            id="image"
-            name="image"
-            className="block w-full px-3 py-1.5 text-sm text-gray-700 border border-solid border-gray-300 rounded mt-1 mb-3"
-          />
-          {state.image ? (
-            <div className="w-full">
-              <img src={state.image} alt="Preview upload" className="mx-auto" />
+  return (
+    <AdminAuth>
+      <div className="flex items-center justify-center p-8">
+        <div className="w-full max-w-md mx-auto">
+          <form onSubmit={handleSubmit}>
+            <label htmlFor="name" className="block font-bold text-gray-700">
+              Name
+            </label>
+            <div className="mt-1 mb-3">
+              <input
+                type="text"
+                name="name"
+                id="name"
+                required={true}
+                value={state.name}
+                onChange={handleChange}
+                className="block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              />
             </div>
-          ) : null}
+            <label htmlFor="url" className="block font-bold text-gray-700">
+              URL
+            </label>
+            <div className="mt-1 mb-3">
+              <input
+                type="url"
+                name="url"
+                id="url"
+                required={true}
+                value={state.url}
+                onChange={handleChange}
+                className="block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              />
+            </div>
+            {state.url ? (
+              <>
+                <audio controls ref={audioRef} className="mx-auto my-4">
+                  <source src={state.url} type="audio/mp3" />
+                  Your browser does not support the audio element.
+                </audio>
+                <p className="text-sm text-center italic">
+                  Is the stream working?
+                </p>
+              </>
+            ) : null}
 
-          <button
-            className="w-full p-2 mt-3 text-white duration-300 bg-blue-600 shadow hover:bg-blue-700"
-            type="submit"
-          >
-            Add stream
-          </button>
-        </form>
+            <label htmlFor="url" className="block font-bold text-gray-700">
+              Select Image
+            </label>
+            <input
+              type="file"
+              onChange={handleChange}
+              id="image"
+              name="image"
+              className="block w-full px-3 py-1.5 text-sm text-gray-700 border border-solid border-gray-300 rounded mt-1 mb-3"
+            />
+            {state.image ? (
+              <div className="w-full">
+                <img
+                  src={state.image}
+                  alt="Preview upload"
+                  className="mx-auto"
+                />
+              </div>
+            ) : null}
+
+            <button
+              className="w-full p-2 mt-3 text-white duration-300 bg-blue-600 shadow hover:bg-blue-700"
+              type="submit"
+            >
+              Add stream
+            </button>
+          </form>
+        </div>
       </div>
-    </div>
+    </AdminAuth>
   )
 }

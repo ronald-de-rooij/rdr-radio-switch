@@ -20,7 +20,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   signOut,
-  User,
+  onAuthStateChanged,
 } from 'firebase/auth'
 import {
   ref,
@@ -173,6 +173,6 @@ export {
   ref,
   getDownloadURL,
   uploadString,
-  uploadBytesResumable,
+  uploadBytesResumable
 }
 // q,
